@@ -127,7 +127,7 @@ export default function Verification({ userEmail, onBack }: VerificationProps) {
           <Button
             type="submit"
             disabled={isVerifying}
-            className="w-full bg-gradient-to-r from-purple-600 to-purple-800 hover:opacity-90 text-white h-11 rounded-md"
+            className="w-full bg-linear-to-r from-purple-600 to-purple-800 hover:opacity-90 text-white h-11 rounded-md"
           >
             {isVerifying ? (
               <>
