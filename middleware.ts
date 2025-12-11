@@ -1,11 +1,31 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-export function middleware(request: NextRequest) {
-  return NextResponse.next();
-}
+const isPublicRoute = createRouteMatcher(["/login"]);
+
+export default clerkMiddleware(
+  async (auth, req) => {
+    if (isPublicRoute(req)) {
+      return NextResponse.next();
+    }
+
+    const { userId, redirectToSignIn } = await auth();
+
+    if (!userId) {
+      return redirectToSignIn({ returnBackUrl: req.url });
+    }
+
+    return NextResponse.next();
+  },
+  {
+    signInUrl: "/login",
+    signUpUrl: "/login",
+    afterSignInUrl: "/dashboard",
+    afterSignUpUrl: "/dashboard",
+  }
+);
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };
 
