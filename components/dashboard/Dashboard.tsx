@@ -1,62 +1,38 @@
 "use client";
 
-import { useState } from "react";
-import { useClerk } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { LogOut, Loader2 } from "lucide-react";
-import { showToast } from "@/lib/toast";
+import { Plus } from "lucide-react";
+import { kpiData } from "@/constants/dashboard";
+import { KpiCard } from "@/components/dashboard/KpiCard";
+import { Overview } from "@/components/dashboard/Overview";
+import { RecentSales } from "@/components/dashboard/RecentSales";
 
-export default function Dashboard() {
-  const { signOut } = useClerk();
-  const router = useRouter();
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
-
-  const handleLogout = async () => {
-    setIsLoggingOut(true);
-    try {
-      await signOut({ redirectUrl: "/login" });
-      showToast.success("Logged out successfully!");
-      router.replace("/login");
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "Logout failed";
-      showToast.error(message);
-      setIsLoggingOut(false);
-    }
-  };
-
+export const Dashboard = () => {
   return (
-    <div className="min-h-screen bg-white dark:bg-black p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-black dark:text-white">
-            Dashboard
-          </h1>
-          <Button
-            onClick={handleLogout}
-            disabled={isLoggingOut}
-            variant="outline"
-            className="flex items-center gap-2"
-          >
-            {isLoggingOut ? (
-              <>
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Logging out...
-              </>
-            ) : (
-              <>
-                <LogOut className="h-4 w-4" />
-                Logout
-              </>
-            )}
-          </Button>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
+          Dashboard
+        </h1>
+        <Button className="bg-blue-600 hover:bg-blue-700 dark:bg-purple-600 dark:hover:bg-purple-700">
+          <Plus className="mr-2 h-4 w-4" />
+          Add New Product
+        </Button>
+      </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {kpiData.map((item) => (
+          <KpiCard key={item.id} item={item} />
+        ))}
+      </div>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        <div className="lg:col-span-8">
+          <Overview />
         </div>
-        <div className="text-center py-20">
-          <p className="text-gray-600 dark:text-gray-400">
-            Dashboard content will be implemented here
-          </p>
+        <div className="lg:col-span-4">
+          <RecentSales />
         </div>
       </div>
     </div>
   );
-}
+};
+

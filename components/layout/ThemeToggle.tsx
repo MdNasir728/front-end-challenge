@@ -22,7 +22,7 @@ export default function ThemeToggle() {
       type="button"
       onClick={() => setTheme(isDark ? "light" : "dark")}
       className={cn(
-        "relative w-20 h-10 rounded-full transition-all duration-300 ease-in-out",
+        "relative w-20 h-8 rounded-full transition-all duration-300 ease-in-out",
         "bg-gray-200 dark:bg-gray-800",
         "border-2 border-gray-300 dark:border-gray-700",
         "focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2",
@@ -33,7 +33,7 @@ export default function ThemeToggle() {
       {/* Toggle indicator */}
       <div
         className={cn(
-          "absolute top-1 left-1 w-8 h-8 rounded-full",
+          "absolute top-0 left-0.5 w-7 h-7 rounded-full",
           "bg-white dark:bg-gray-900",
           "shadow-lg transition-transform duration-300 ease-in-out",
           "flex items-center justify-center",
