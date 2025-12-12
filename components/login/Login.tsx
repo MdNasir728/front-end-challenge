@@ -289,7 +289,7 @@ export default function Login() {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-gradient-to-r from-purple-600 to-purple-800 hover:opacity-90 text-white h-11 rounded-md disabled:opacity-50"
+            className="w-full bg-linear-to-r from-purple-600 to-purple-800 hover:opacity-90 text-white h-11 rounded-md disabled:opacity-50"
           >
             {isSubmitting ? (
               <>
