@@ -1,4 +1,3 @@
-"use client";
 
 import { DashboardCard } from "@/components/ui/dashboard-card";
 import { KpiItem } from "@/types/kpi";

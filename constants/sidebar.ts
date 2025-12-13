@@ -5,7 +5,7 @@ export const sidebarMenu: MenuItem[] = [
     id: "home",
     label: "Home",
     icon: "Home",
-    href: "/dashboard",
+    href: "/home",
   },
   {
     id: "dashboard",

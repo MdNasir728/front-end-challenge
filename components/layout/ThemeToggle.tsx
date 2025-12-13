@@ -55,7 +55,7 @@ export default function ThemeToggle() {
         )} />
         <Moon className={cn(
           "w-4 h-4 transition-opacity duration-300",
-          isDark ? "opacity-100 text-purple-400" : "opacity-30"
+          isDark ? "opacity-100 text-purple-400 mr-1" : "opacity-30"
         )} />
       </div>
     </button>

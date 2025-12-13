@@ -18,14 +18,14 @@ import { RelatedDataSection } from "./RelatedDataSection";
 import { products as baseProducts } from "@/constants/products";
 import { getAllProducts } from "@/lib/productsUtil";
 import { downloadProducts } from "@/lib/downloadUtil";
-import type { ProductStatus } from "@/types/product";
+import type { ProductStatus, ProductCategory } from "@/types/product";
 
 export default function ProductList() {
   const pathname = usePathname();
   const [status, setStatus] = useState<ProductStatus>("published");
   const [products, setProducts] = useState(() => getAllProducts(baseProducts));
   const [downloadValue, setDownloadValue] = useState("download");
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedCategory, setSelectedCategory] = useState<ProductCategory | "all">("all");
 
   // Refresh products when component mounts or when returning from add/edit page
   useEffect(() => {
@@ -101,13 +101,13 @@ export default function ProductList() {
               <div className="flex items-center gap-2">
                 <Select
                   value={selectedCategory}
-                  onValueChange={setSelectedCategory}
+                  onValueChange={(value) => setSelectedCategory(value as ProductCategory | "all")}
                 >
                   <SelectTrigger className="h-9 w-24 bg-gray-50 dark:bg-gray-700 text-sm border-gray-200 dark:border-gray-600">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All</SelectItem>
+                    <SelectItem value="all">All Categories</SelectItem>
                     <SelectItem value="electronics">Electronics</SelectItem>
                     <SelectItem value="clothing">Clothing</SelectItem>
                     <SelectItem value="gaming">Gaming</SelectItem>
@@ -115,6 +115,9 @@ export default function ProductList() {
                     <SelectItem value="sports">Sports</SelectItem>
                     <SelectItem value="beauty">Beauty</SelectItem>
                     <SelectItem value="accessories">Accessories</SelectItem>
+                    <SelectItem value="books">Books</SelectItem>
+                    <SelectItem value="toys">Toys</SelectItem>
+                    <SelectItem value="food">Food</SelectItem>
                   </SelectContent>
                 </Select>
                 <Select

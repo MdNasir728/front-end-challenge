@@ -275,15 +275,18 @@ export default function ProductForm({ product }: ProductFormProps) {
                               <SelectValue placeholder="Product Category" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent>
-                            <SelectItem value="electronics">Electronics</SelectItem>
-                            <SelectItem value="clothing">Clothing</SelectItem>
-                            <SelectItem value="gaming">Gaming</SelectItem>
-                            <SelectItem value="home">Home</SelectItem>
-                            <SelectItem value="sports">Sports</SelectItem>
-                            <SelectItem value="beauty">Beauty</SelectItem>
-                            <SelectItem value="accessories">Accessories</SelectItem>
-                          </SelectContent>
+                            <SelectContent>
+                              <SelectItem value="electronics">Electronics</SelectItem>
+                              <SelectItem value="clothing">Clothing</SelectItem>
+                              <SelectItem value="gaming">Gaming</SelectItem>
+                              <SelectItem value="home">Home</SelectItem>
+                              <SelectItem value="sports">Sports</SelectItem>
+                              <SelectItem value="beauty">Beauty</SelectItem>
+                              <SelectItem value="accessories">Accessories</SelectItem>
+                              <SelectItem value="books">Books</SelectItem>
+                              <SelectItem value="toys">Toys</SelectItem>
+                              <SelectItem value="food">Food</SelectItem>
+                            </SelectContent>
                         </Select>
                         <FormMessage />
                       </FormItem>

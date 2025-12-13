@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter, usePathname } from "next/navigation";
 import { Loader2 } from "lucide-react";
@@ -15,35 +15,28 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const { isLoaded, isSignedIn } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
-  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    if (!isLoaded) {
-      return;
-    }
+    // Wait for Clerk to finish loading auth state
+    if (!isLoaded) return;
 
     const isPublicRoute = publicRoutes.some((route) => pathname?.startsWith(route));
 
-    // If user is signed in and on a public route (like /login), redirect to dashboard
+    // Redirect signed-in users away from public routes (e.g., /login)
     if (isSignedIn && isPublicRoute) {
       router.replace("/dashboard");
-      setTimeout(() => setIsReady(true), 0);
       return;
     }
 
-    // If user is not signed in and not on a public route, redirect to login
+    // Redirect unauthenticated users to login
     if (!isSignedIn && !isPublicRoute) {
       router.replace("/login");
-      setTimeout(() => setIsReady(true), 0);
       return;
     }
-
-    // Allow access - no redirect needed
-    setTimeout(() => setIsReady(true), 0);
   }, [isLoaded, isSignedIn, pathname, router]);
 
-  // Show loading state while checking authentication
-  if (!isLoaded || !isReady) {
+  // Show loading state while Clerk checks authentication
+  if (!isLoaded) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-white dark:bg-black">
         <div className="flex flex-col items-center gap-4">
@@ -56,4 +49,3 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   return <>{children}</>;
 }
-

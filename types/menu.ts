@@ -1,9 +1,9 @@
-import type { IconName } from "lucide-react";
+import type * as Icons from "lucide-react";
 
 export type MenuItem = {
   id: string;
   label: string;
-  icon: IconName;
+  icon: keyof typeof Icons;
   href?: string;
   disabled?: boolean;
   active?: boolean;
