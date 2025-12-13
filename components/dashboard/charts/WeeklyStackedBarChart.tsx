@@ -68,9 +68,12 @@ export const WeeklyStackedBarChart = () => {
               dataKey="base" 
               fill={stackedBase} 
               radius={[0, 0, 0, 0]}
-              shape={(props: BarProps & { payload?: { base: number; overlay: number } }) => {
-                const { x, y, width, height, payload } = props;
-                if (x == null || y == null || width == null || height == null || !payload) return null;
+              shape={(props: any) => {
+                const { x, y, width, height, payload } = props as BarProps & { payload?: { base: number; overlay: number } };
+                if (x == null || y == null || width == null || height == null || !payload) return <g />;
+                
+                // Type assertion for payload with base and overlay
+                const dataPayload = payload as { base: number; overlay: number };
                 
                 const baseY = typeof y === 'number' ? y : Number(y) || 0;
                 const baseHeight = typeof height === 'number' ? height : Number(height) || 0;
@@ -79,8 +82,8 @@ export const WeeklyStackedBarChart = () => {
                 // The overlay value needs to be scaled to match the chart's scale
                 // Since we're in a BarChart with domain [0, 500], the scale is chartHeight / 500
                 // But we can use the base bar's height to determine the scale
-                const baseValue = payload.base;
-                const overlayValue = payload.overlay;
+                const baseValue = dataPayload.base;
+                const overlayValue = dataPayload.overlay;
                 const scale = baseHeight / baseValue; // Scale factor
                 const overlayHeight = overlayValue * scale;
                 const overlayY = baseY - gapSize - overlayHeight;

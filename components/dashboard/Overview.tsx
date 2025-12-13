@@ -20,40 +20,40 @@ export const Overview = () => {
 
   const CustomBar = ({ x, y, width, height, fill, payload }: BarProps & { payload?: { value: number } }) => {
     if (x == null || y == null || width == null || height == null) return null;
-    
+
     // Ensure height is a number
     const barHeight = typeof height === 'number' ? height : Number(height) || 0;
     const currentValue = payload?.value || 0;
     const maxValue = 6000;
-    
+
     // Calculate the full chart area height
     // For domain [0, 6000], if bar height represents value v, then:
     // chartAreaHeight = barHeight * (6000 / v)
     // Also account for the y position - the bottom of chart is at y + barHeight for value 0
     // So full chart height from top (y=0) to bottom is: y + barHeight (for max value bar)
     // For any bar: chartHeight = y + (barHeight * 6000 / currentValue)
-    const chartHeight = currentValue > 0 
-      ? (barHeight * maxValue) / currentValue 
+    const chartHeight = currentValue > 0
+      ? (barHeight * maxValue) / currentValue
       : (typeof y === 'number' ? y : Number(y) || 0) + barHeight;
-    
+
     return (
       <g>
         {/* Background gradient rectangle extending from top (y=0) to bottom of chart */}
-        <rect 
-          x={x} 
-          y={0} 
-          width={width} 
-          height={chartHeight} 
+        <rect
+          x={x}
+          y={0}
+          width={width}
+          height={chartHeight}
           fill={`url(#${gradientId})`}
         />
         {/* Actual bar on top */}
-        <rect 
-          x={x} 
-          y={y} 
-          width={width} 
-          height={height} 
-          fill={fill} 
-          rx={4} 
+        <rect
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+          fill={fill}
+          rx={4}
           ry={4}
         />
       </g>

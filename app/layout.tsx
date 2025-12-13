@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { ToastProvider } from "@/components/providers/ToastProvider";
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import { RoleProvider } from "@/contexts/RoleContext";
+import LayoutWrapper from "@/components/layout/LayoutWrapper";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -45,7 +46,9 @@ export default function RootLayout({
           >
             <AuthProvider>
               <RoleProvider>
-                {children}
+                <LayoutWrapper>
+                  {children}
+                </LayoutWrapper>
                 <ToastProvider />
               </RoleProvider>
             </AuthProvider>

@@ -8,12 +8,12 @@ import ThemeToggle from "@/components/layout/ThemeToggle";
 import { useRole } from "@/contexts/RoleContext";
 import { cn } from "@/lib/utils";
 
-const roles = ["Manager", "Store Keeper"] as const;
-type Role = typeof roles[number];
+const ROLES = ["Manager", "Store Keeper"] as const;
+type Role = typeof ROLES[number];
 
 export default function Header() {
   return (
-    <header className="flex items-center justify-between px-4 py-3">
+    <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between bg-gray-100 dark:bg-black  dark:border-gray-800 px-4 py-3 md:left-64">
       <div className="flex flex-1 items-center gap-3">
         <div className="relative w-full max-w-md">
           <Input
@@ -48,8 +48,11 @@ function RoleSelect() {
       onChange={(e) => setRole(e.target.value as Role)}
       className="h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 shadow-sm transition hover:border-gray-300 dark:border-gray-800 dark:bg-black dark:text-gray-200"
     >
-      <option value="Manager">Manager</option>
-      <option value="Store Keeper">Store Keeper</option>
+      {ROLES.map((r) => (
+        <option key={r} value={r}>
+          {r}
+        </option>
+      ))}
     </select>
   );
 }
@@ -66,8 +69,8 @@ function IconButton({
       type="button"
       aria-label={ariaLabel}
       className={cn(
-        "flex h-10 w-10 items-center justify-center text-gray-700 transition",
-        "hover:bg-gray-100 dark:border-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
+        "flex h-10 w-10 items-center justify-center rounded-lg text-gray-700 transition",
+        "hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
       )}
     >
       <Icon className="h-5 w-5" />
