@@ -10,6 +10,7 @@ import { RecentSales } from "@/components/dashboard/RecentSales";
 
 export const Dashboard = () => {
   return (
+    <>
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
@@ -26,16 +27,17 @@ export const Dashboard = () => {
         {kpiData.map((item) => (
           <KpiCard key={item.id} item={item} />
         ))}
-      </div>
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-        <div className="lg:col-span-8">
-          <Overview />
-        </div>
-        <div className="lg:col-span-4">
-          <RecentSales />
-        </div>
-      </div>
+      </div >
+  <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+    <div className="lg:col-span-8">
+      <Overview />
     </div>
+    <div className="lg:col-span-4">
+      <RecentSales />
+    </div>
+  </div>
+    </div >
+        </>
   );
 };
 

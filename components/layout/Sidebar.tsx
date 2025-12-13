@@ -6,6 +6,7 @@ import Link from "next/link";
 import * as Icons from "lucide-react";
 import type {  LucideIcon } from "lucide-react";
 import { sidebarMenu } from "@/constants/sidebar";
+import { useRole } from "@/contexts/RoleContext";
 import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 
@@ -17,11 +18,27 @@ function IconByName({ name, className }: { name: keyof typeof Icons; className?:
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const { role } = useRole();
+  
+  // Filter menu items based on role
+  const filteredMenu = useMemo(() => {
+    if (role === "Store Keeper") {
+      // Store Keeper: Hide only Dashboard
+      return sidebarMenu.filter((item) => {
+        if (item.id === "dashboard") {
+          return false;
+        }
+        return true;
+      });
+    }
+    // Manager: Show all menu items
+    return sidebarMenu;
+  }, [role]);
   
   // Determine which parent menu should be expanded based on current path
   const initialExpanded = useMemo(
     () =>
-      sidebarMenu
+      filteredMenu
         .filter((item) => item.children && item.children.length > 0)
         .reduce<Record<string, boolean>>((acc, item) => {
           // Check if any child's href matches current pathname
@@ -31,14 +48,14 @@ export default function Sidebar() {
           acc[item.id] = hasActiveChild || false;
           return acc;
         }, {}),
-    [pathname]
+    [pathname, filteredMenu]
   );
 
   const [expanded, setExpanded] = useState<Record<string, boolean>>(initialExpanded);
 
-  // Update expanded state when pathname changes
+  // Update expanded state when pathname or role changes
   useEffect(() => {
-    const newExpanded = sidebarMenu
+    const newExpanded = filteredMenu
       .filter((item) => item.children && item.children.length > 0)
       .reduce<Record<string, boolean>>((acc, item) => {
         const hasActiveChild = item.children?.some(
@@ -50,7 +67,7 @@ export default function Sidebar() {
     startTransition(() => {
       setExpanded(newExpanded);
     });
-  }, [pathname]);
+  }, [pathname, filteredMenu, role]);
 
   const toggle = (id: string) =>
     setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -58,9 +75,13 @@ export default function Sidebar() {
   // Check if a menu item is active based on pathname
   const isActive = (href?: string, isChild?: boolean) => {
     if (!href || href === "#") return false;
-    // Exact match for dashboard/home
+    // Exact match for home
+    if (href === "/home") {
+      return pathname === "/home" || pathname === "/";
+    }
+    // Exact match for dashboard
     if (href === "/dashboard") {
-      return pathname === "/dashboard" || pathname === "/";
+      return pathname === "/dashboard";
     }
     // For child items, use exact match
     if (isChild) {
@@ -89,7 +110,7 @@ export default function Sidebar() {
 
       {/* Menu */}
       <nav className="flex flex-col gap-1">
-        {sidebarMenu.map((item) =>
+        {filteredMenu.map((item) =>
           item.children && item.children.length > 0 ? (
             <div key={item.id} className="mb-1">
               <button

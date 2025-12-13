@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { ToastProvider } from "@/components/providers/ToastProvider";
 import { AuthProvider } from "@/components/providers/AuthProvider";
+import { RoleProvider } from "@/contexts/RoleContext";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -43,8 +44,10 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <AuthProvider>
-              {children}
-              <ToastProvider />
+              <RoleProvider>
+                {children}
+                <ToastProvider />
+              </RoleProvider>
             </AuthProvider>
           </ThemeProvider>
         </body>

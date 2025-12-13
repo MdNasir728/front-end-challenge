@@ -5,9 +5,11 @@ import { Search, Bell, LayoutGrid } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "@/components/layout/ThemeToggle";
+import { useRole } from "@/contexts/RoleContext";
 import { cn } from "@/lib/utils";
 
-const roles = ["Admin", "Manager", "Member"];
+const roles = ["Manager", "Store Keeper"] as const;
+type Role = typeof roles[number];
 
 export default function Header() {
   return (
@@ -38,16 +40,16 @@ export default function Header() {
 }
 
 function RoleSelect() {
+  const { role, setRole } = useRole();
+
   return (
     <select
+      value={role}
+      onChange={(e) => setRole(e.target.value as Role)}
       className="h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 shadow-sm transition hover:border-gray-300 dark:border-gray-800 dark:bg-black dark:text-gray-200"
-      defaultValue="Admin"
     >
-      {roles.map((role) => (
-        <option key={role} value={role}>
-          {role}
-        </option>
-      ))}
+      <option value="Manager">Manager</option>
+      <option value="Store Keeper">Store Keeper</option>
     </select>
   );
 }
@@ -72,4 +74,3 @@ function IconButton({
     </button>
   );
 }
-

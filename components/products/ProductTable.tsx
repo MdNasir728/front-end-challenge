@@ -39,17 +39,24 @@ export const ProductTable = ({ products, status, onProductChange }: ProductTable
     [products, status]
   );
 
-  // Reset page when status changes
+  // Reset page when status or products (category filter) changes
   const prevStatusRef = useRef(status);
+  const prevProductsRef = useRef(products);
+  
   useEffect(() => {
-    if (prevStatusRef.current !== status) {
+    const statusChanged = prevStatusRef.current !== status;
+    // Check if products array reference changed (category filter changed)
+    const productsChanged = prevProductsRef.current !== products;
+    
+    if (statusChanged || productsChanged) {
       prevStatusRef.current = status;
-      // Reset to first page when status changes
+      prevProductsRef.current = products;
+      // Reset to first page when status or category filter changes
       startTransition(() => {
         setCurrentPage(1);
       });
     }
-  }, [status]);
+  }, [status, products]);
 
   const sortedProducts = useMemo(() => {
     if (!sortField) return filteredProducts;
