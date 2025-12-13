@@ -5,22 +5,21 @@ export const sidebarMenu: MenuItem[] = [
     id: "home",
     label: "Home",
     icon: "Home",
-    href: "#",
-    active: true,
+    href: "/dashboard",
   },
   {
     id: "dashboard",
     label: "Dashboard",
     icon: "LayoutGrid",
-    href: "#",
+    href: "/dashboard",
   },
   {
     id: "store",
     label: "Store",
     icon: "Store",
     children: [
-      { id: "product", label: "Product", icon: "Package", href: "#", active: true },
-      { id: "add-product", label: "Add Product", icon: "PlusCircle", href: "#" },
+      { id: "product", label: "Product", icon: "Package", href: "/products" },
+      { id: "add-product", label: "Add Product", icon: "PlusCircle", href: "/products/add" },
     ],
   },
   {
@@ -28,9 +27,9 @@ export const sidebarMenu: MenuItem[] = [
     label: "Analytic",
     icon: "BarChart3",
     children: [
-      { id: "analytic-overview", label: "Analytic", icon: "LineChart", href: "#" },
-      { id: "traffic", label: "Traffic", icon: "Activity", href: "#" },
-      { id: "earning", label: "Earning", icon: "TrendingUp", href: "#" },
+      { id: "analytic-overview", label: "Analytic", icon: "LineChart", href: "/analytics/overview" },
+      { id: "traffic", label: "Traffic", icon: "Activity", href: "/analytics/traffic" },
+      { id: "earning", label: "Earning", icon: "TrendingUp", href: "/analytics/earning" },
     ],
   },
   {
@@ -38,8 +37,8 @@ export const sidebarMenu: MenuItem[] = [
     label: "Finances",
     icon: "Wallet",
     children: [
-      { id: "payment", label: "Payment", icon: "CreditCard", href: "#" },
-      { id: "payout", label: "Payout", icon: "Banknote", href: "#" },
+      { id: "payment", label: "Payment", icon: "CreditCard", href: "/finances/payment" },
+      { id: "payout", label: "Payout", icon: "Banknote", href: "/finances/payout" },
     ],
   },
   {
@@ -47,15 +46,15 @@ export const sidebarMenu: MenuItem[] = [
     label: "Account Setting",
     icon: "Settings",
     children: [
-      { id: "profile", label: "My Profile", icon: "User", href: "#" },
-      { id: "security", label: "Security", icon: "Shield", href: "#" },
+      { id: "profile", label: "My Profile", icon: "User", href: "/account/profile" },
+      { id: "security", label: "Security", icon: "Shield", href: "/account/security" },
     ],
   },
   {
     id: "support",
     label: "Help And Support",
     icon: "LifeBuoy",
-    href: "#",
+    href: "/support",
   },
 ];
 

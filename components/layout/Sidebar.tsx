@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, startTransition } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import * as Icons from "lucide-react";
 import type {  LucideIcon } from "lucide-react";
@@ -15,21 +16,64 @@ function IconByName({ name, className }: { name: keyof typeof Icons; className?:
 }
 
 export default function Sidebar() {
+  const pathname = usePathname();
+  
+  // Determine which parent menu should be expanded based on current path
   const initialExpanded = useMemo(
     () =>
       sidebarMenu
         .filter((item) => item.children && item.children.length > 0)
         .reduce<Record<string, boolean>>((acc, item) => {
-          acc[item.id] = !!item.active || true;
+          // Check if any child's href matches current pathname
+          const hasActiveChild = item.children?.some(
+            (child) => child.href && pathname.startsWith(child.href)
+          );
+          acc[item.id] = hasActiveChild || false;
           return acc;
         }, {}),
-    []
+    [pathname]
   );
 
   const [expanded, setExpanded] = useState<Record<string, boolean>>(initialExpanded);
 
+  // Update expanded state when pathname changes
+  useEffect(() => {
+    const newExpanded = sidebarMenu
+      .filter((item) => item.children && item.children.length > 0)
+      .reduce<Record<string, boolean>>((acc, item) => {
+        const hasActiveChild = item.children?.some(
+          (child) => child.href && pathname.startsWith(child.href)
+        );
+        acc[item.id] = hasActiveChild || false;
+        return acc;
+      }, {});
+    startTransition(() => {
+      setExpanded(newExpanded);
+    });
+  }, [pathname]);
+
   const toggle = (id: string) =>
     setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
+
+  // Check if a menu item is active based on pathname
+  const isActive = (href?: string, isChild?: boolean) => {
+    if (!href || href === "#") return false;
+    // Exact match for dashboard/home
+    if (href === "/dashboard") {
+      return pathname === "/dashboard" || pathname === "/";
+    }
+    // For child items, use exact match
+    if (isChild) {
+      return pathname === href;
+    }
+    // For parent routes, check if pathname starts with href but ensure it's not a more specific child route
+    // For example, /products should not be active when on /products/add
+    if (href === "/products") {
+      return pathname === "/products" || pathname.startsWith("/products/edit");
+    }
+    // For other routes, check if pathname starts with href
+    return pathname.startsWith(href);
+  };
 
   return (
     <div className="flex h-full flex-col gap-4 bg-gray-100 px-3 py-6 text-sm text-gray-800 dark:bg-black dark:text-gray-100">
@@ -53,7 +97,7 @@ export default function Sidebar() {
                 className={cn(
                   "flex w-full items-center justify-between rounded-lg px-3 py-2 text-left transition",
                   "hover:bg-gray-200 dark:hover:bg-gray-800",
-                  item.active && "bg-white shadow-sm dark:bg-gray-900"
+                  (expanded[item.id] || item.children?.some((child) => isActive(child.href))) && "bg-white shadow-sm dark:bg-gray-900"
                 )}
               >
                 <div className="flex items-center gap-2">
@@ -76,7 +120,7 @@ export default function Sidebar() {
                       className={cn(
                         "flex items-center gap-2 rounded-lg px-2 py-2 text-sm transition",
                         "hover:bg-gray-200 dark:hover:bg-gray-800",
-                        child.active
+                        isActive(child.href, true)
                           ? "bg-white font-medium shadow-sm dark:bg-gray-900"
                           : "text-gray-700 dark:text-gray-300"
                       )}
@@ -95,7 +139,7 @@ export default function Sidebar() {
               className={cn(
                 "flex items-center gap-2 rounded-lg px-3 py-2 transition",
                 "hover:bg-gray-200 dark:hover:bg-gray-800",
-                item.active
+                isActive(item.href)
                   ? "bg-white font-medium shadow-sm dark:bg-gray-900"
                   : "text-gray-700 dark:text-gray-300"
               )}
